@@ -34,11 +34,21 @@ function keydown(key) {
 }
 
 function transform() {
-	svgreg.getElementsByTagName('text')[0].textContent = inputstring.value;
+	if (inputstring.value != '') {
+		svgreg.getElementsByTagName('text')[0].textContent = inputstring.value;
+		geturl['st'] = inputstring.value;
+	}
+	else {
+		svgreg.getElementsByTagName('text')[0].textContent = '字';
+		geturl['st'] = inputstring.value;
+		delete geturl['st'];
+	}
+	array2url(geturl);
 	svgtopngurl(svgreg, function (url) {
 		let lk = document.querySelectorAll("[rel='icon']")[0];
 		lk.href = url;
 	});
+	svgreg.getElementsByTagName('text')[0].textContent = inputstring.value;
 	svgtoimg(svgreg, function (img) {
 		var i1 = img;
 		var i2 = document.createElement("canvas");
@@ -59,7 +69,5 @@ function transform() {
 		}
 		outputstring.value = s;
 		ctx.putImageData(imgdt, 0, 0);
-		geturl['st'] = inputstring.value;
-		array2url(geturl);
 	});
 }
