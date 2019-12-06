@@ -18,6 +18,12 @@ window.onload = function () {
 		if (typeof geturl['st'] != 'undefined') {
 			inputstring.value = geturl['st'];
 			transform();
+		} else {
+			svgreg.getElementsByTagName('text')[0].textContent = '字';
+			svgtopngurl(svgreg, function (url) {
+				let lk = document.querySelectorAll("[rel='icon']")[0];
+				lk.href = url;
+			});
 		}
 	});
 };
@@ -29,8 +35,11 @@ function keydown(key) {
 
 function transform() {
 	svgreg.getElementsByTagName('text')[0].textContent = inputstring.value;
+	svgtopngurl(svgreg, function (url) {
+		let lk = document.querySelectorAll("[rel='icon']")[0];
+		lk.href = url;
+	});
 	svgtoimg(svgreg, function (img) {
-		myicon.href = img.src;
 		var i1 = img;
 		var i2 = document.createElement("canvas");
 		var w = i2.width = i1.naturalWidth;
