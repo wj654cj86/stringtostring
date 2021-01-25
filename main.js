@@ -7,7 +7,7 @@ window.onload = function () {
 		};
 		yield {
 			nextfunc: function (callback) {
-				openfiletotext("style.svg", function (text) {
+				openfile("style.svg", function (text) {
 					svgreg = text2xml(text);
 					callback();
 				});
