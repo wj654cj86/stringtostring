@@ -1,31 +1,20 @@
 var geturl = url2array();
 var svgreg;
-window.onload = function () {
-	generator(function* () {
-		window.onkeydown = function () {
-			keydown(event.keyCode);
-		};
-		yield {
-			nextfunc: function (callback) {
-				openfile("style.svg", function (text) {
-					svgreg = text2xml(text);
-					callback();
-				});
-			},
-			cbfunc: function () { }
-		};
-		decode.onclick = transform;
-		if (typeof geturl['st'] != 'undefined') {
-			inputstring.value = geturl['st'];
-			transform();
-		} else {
-			svgreg.getElementsByTagName('text')[0].textContent = '字';
-			svgtopngurl(svgreg, function (url) {
-				let lk = document.querySelectorAll("[rel='icon']")[0];
-				lk.href = url;
-			});
-		}
-	});
+window.onload = async function () {
+	window.onkeydown = function (e) {
+		keydown(e.keyCode);
+	};
+	svgreg = text2xml(await promise(openfile, 'style.svg'));
+	if (typeof geturl['st'] != 'undefined') {
+		inputstring.value = geturl['st'];
+		transform();
+	} else {
+		svgreg.getElementsByTagName('text')[0].textContent = '字';
+		svgtopngurl(svgreg, function (url) {
+			let lk = document.querySelectorAll("[rel='icon']")[0];
+			lk.href = url;
+		});
+	}
 };
 
 function keydown(key) {

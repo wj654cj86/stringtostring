@@ -54,6 +54,26 @@ function array2url(arr) {
 	window.history.pushState({}, 0, url + strUrl + location.hash);
 }
 
+function promise(callback, ...args) {
+	return new Promise((resolve, reject) => {
+		callback(...args, (data) => {
+			resolve(data);
+		});
+	});
+}
+
+function promisearr(callback, ...args) {
+	return new Promise((resolve, reject) => {
+		callback(...args, (...args) => {
+			resolve(args);
+		});
+	});
+}
+
+function sleep(ms) {
+	return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 function openfile(url, callback) {
 	if (typeof callback == "undefined") {
 		callback = function (str) { };
@@ -87,23 +107,6 @@ function copyxml(xml) {
 	return text2xml(xml2text(xml));
 }
 
-function generator(genfunc) {
-	var g = genfunc();
-
-	function next() {
-		let res = g.next();
-		if (!res.done) {
-			if (typeof res.value.argsfront != 'object') res.value.argsfront = [];
-			if (typeof res.value.argsback != 'object') res.value.argsback = [];
-			res.value.nextfunc(...res.value.argsfront, function (...args) {
-				res.value.cbfunc(...args);
-				next();
-			}, ...res.value.argsback);
-		}
-	}
-	next();
-}
-
 function getimgsize(imgsrc, callback) {
 	let a = new Image();
 	a.onload = function () {
@@ -114,6 +117,15 @@ function getimgsize(imgsrc, callback) {
 	};
 	a.src = imgsrc;
 }
+
+function loadimg(imgsrc, callback) {
+	let img = new Image();
+	img.onload = function () {
+		callback(img);
+	};
+	img.src = imgsrc;
+}
+
 function loadsound(src, callback) {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', src);
