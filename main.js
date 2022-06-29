@@ -1,12 +1,12 @@
 var geturl = url2array();
 var svgreg;
-window.onload = async function () {
+window.onload = async () => {
 	window.onkeydown = function (e) {
 		keydown(e.keyCode);
 	};
 	svgreg = text2xml(await promise(openfile, 'style.svg'));
-	if (typeof geturl['st'] != 'undefined') {
-		inputstring.value = geturl['st'];
+	if (typeof geturl.st != 'undefined') {
+		inputstring.value = geturl.st;
 		transform();
 	} else {
 		svgreg.getElementsByTagName('text')[0].textContent = '字';
@@ -25,12 +25,12 @@ function keydown(key) {
 function transform() {
 	if (inputstring.value != '') {
 		svgreg.getElementsByTagName('text')[0].textContent = inputstring.value;
-		geturl['st'] = inputstring.value;
+		geturl.st = inputstring.value;
 	}
 	else {
 		svgreg.getElementsByTagName('text')[0].textContent = '字';
-		geturl['st'] = inputstring.value;
-		delete geturl['st'];
+		geturl.st = inputstring.value;
+		delete geturl.st;
 	}
 	array2url(geturl);
 	svgtopngurl(svgreg, function (url) {
