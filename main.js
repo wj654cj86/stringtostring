@@ -1,33 +1,20 @@
 let geturl = url2obj();
-let svgreg;
-
-function keydown(key) {
-	if (key == 13)
-		transform();
-}
-
-window.onload = async () => {
-	window.onkeydown = e => keydown(e.keyCode);
-	svgreg = text2xml(await loadfile('text', 'style.svg'));
-	inputstring.value = decodeURIComponent(geturl.st) ?? '';
-	transform();
-	decode.onclick = transform;
-};
+let svg = text2svg(await loadfile('text', 'style.svg'));
+let text = svg.querySelector('text');
 
 async function transform() {
 	if (inputstring.value != '') {
-		svgreg.querySelector('text').textContent = inputstring.value;
+		text.textContent = inputstring.value;
 		geturl.st = inputstring.value;
-	}
-	else {
-		svgreg.querySelector('text').textContent = '字';
+	} else {
+		text.textContent = '字';
 		geturl.st = inputstring.value;
 		delete geturl.st;
 	}
 	obj2url(geturl);
-	document.querySelector("[rel='icon']").href = await svgtopngurl(svgreg);
-	svgreg.querySelector('text').textContent = inputstring.value;
-	let i1 = await svgtoimg(svgreg);
+	document.querySelector("[rel='icon']").href = await svgtopngurl(svg);
+	text.textContent = inputstring.value;
+	let i1 = await svgtoimg(svg);
 	let i2 = document.createElement("canvas");
 	let w = i2.width = i1.naturalWidth;
 	let h = i2.height = i1.naturalHeight;
@@ -45,3 +32,12 @@ async function transform() {
 	outputstring.value = s;
 	ctx.putImageData(imgdt, 0, 0);
 }
+
+function keydown(key) {
+	if (key == 13) transform();
+}
+
+window.onkeydown = e => keydown(e.keyCode);
+inputstring.value = decodeURIComponent(geturl.st ?? '');
+decode.onclick = transform;
+transform();
