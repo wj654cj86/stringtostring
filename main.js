@@ -12,9 +12,9 @@ async function transform() {
 		delete geturl.st;
 	}
 	obj2url(geturl);
-	document.querySelector("[rel='icon']").href = await svgtopngurl(svg);
+	document.querySelector("[rel='icon']").href = await svg2pngurl(svg);
 	text.textContent = inputstring.value;
-	let i1 = await svgtoimg(svg);
+	let i1 = await svg2img(svg);
 	let i2 = document.createElement("canvas");
 	let w = i2.width = i1.naturalWidth;
 	let h = i2.height = i1.naturalHeight;
